@@ -1,10 +1,8 @@
-﻿using BooksApp.Models;
+﻿using BooksApp.Data.Models;
+using BooksApp.Services.Abstractions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace BooksApp.Controllers
@@ -13,25 +11,72 @@ namespace BooksApp.Controllers
     {
         private readonly ILogger<BooksController> _logger;
 
-        public BooksController(ILogger<BooksController> logger)
+        private readonly IBookService _service;
+
+        public BooksController(ILogger<BooksController> logger, IBookService service)
         {
             _logger = logger;
+            _service = service;
         }
 
-        public IActionResult Index()
+        public async Task<ActionResult<IEnumerable<Book>>> BooksList()
         {
-            return View();
+            var result = await _service.GetAllBooksAsync();
+            if (!result.Success)
+                ViewBag.error = result.ErrorMessage.Message;
+
+            return View(result.Data);
         }
 
-        public IActionResult Privacy()
+
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Book>>> GetBooks()
         {
-            return View();
+            var result = await _service.GetAllBooksAsync();
+            if (!result.Success)
+                ViewBag.error = result.ErrorMessage.Message;
+
+            return Json(result.Data);
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        [HttpGet]
+        public async Task<ActionResult<Book>> GetBook(int id)
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            var result = await _service.GetBookAsync(id);
+            if (!result.Success)
+                ViewBag.error = result.ErrorMessage.Message;
+
+            return Json(result.Data);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<Book>> PostBook(Book model)
+        {
+            var result = await _service.CreateBookAsync(model);
+            if (!result.Success)
+                ViewBag.error = result.ErrorMessage.Message;
+
+            return Json(result.Data);
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> UpdateBook(int id, Book model)
+        {
+            var result = await _service.UpdateBookAsync(id, model);
+            if (!result.Success)
+                ViewBag.error = result.ErrorMessage.Message;
+
+            return Json("Update Employee Success!");
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> DeleteBooks(IReadOnlyCollection<int> bookIds)
+        {
+            var result = await _service.DeleteBookAsync(bookIds);
+            if (!result.Success)
+                ViewBag.error = result.ErrorMessage.Message;
+
+            return Json("Delete Books Success!");
         }
     }
 }

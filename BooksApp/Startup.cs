@@ -1,4 +1,6 @@
 using BooksApp.Data.Contexts;
+using BooksApp.Services.Abstractions;
+using BooksApp.Services.Implementations;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -21,6 +23,8 @@ namespace BooksApp
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("myconn")));
+
+            services.AddScoped<IBookService, BookService>();
 
             services.AddControllersWithViews();
         }
@@ -49,7 +53,7 @@ namespace BooksApp
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Book}/{action=BooksList}/{id?}");
             });
         }
     }
