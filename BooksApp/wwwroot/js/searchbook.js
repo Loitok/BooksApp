@@ -1,4 +1,4 @@
-﻿<script>
+﻿
     $(document).ready(function () {
         $("#searchInput").on("keyup", function () {
             var value = $(this).val().toLowerCase();
@@ -9,7 +9,7 @@
                 success: function (result) {
                     $("tbody").empty();
                     $.each(result, function (i, book) {
-                        $("tbody").append("<tr id='" + book.Id + "' onclick='highlightRow(this)'><td>" + book.Name + "</td><td>" + book.PublicationDate + "</td><td>" + book.PageCount + "</td></tr>");
+                        $("tbody").append("<tr id='" + book.Id + "' onclick='highlightRow(this)'><td>" + book.Id + "</td><td>" + book.Title + "</td><td>" + book.Description + "</td><td>" + book.PublicationDate + "</td><td>" + book.PageCount + "</td></tr>");
                     });
                 },
                 error: function () {
@@ -17,4 +17,3 @@
                 }
             });
         })});
-</script>

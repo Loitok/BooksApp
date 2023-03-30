@@ -8,7 +8,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/locale/uk.min.js"></script>
-    <script src="~/js/booklist.js"></script>
+
     <script src="~/js/savebook.js"></script>
     <script src="~/js/searchbook.js"></script>
     <script src="~/js/sortbooks.js"></script>
@@ -25,19 +25,23 @@
 <table class="table table-bordered table-hover">
     <thead>
         <tr>
-            <th onclick="sortTable(0)">Title</th>
-            <th onclick="sortTable(1)">PublicationDate</th>
-            <th onclick="sortTable(2)">PageCount</th>
+            <th onclick="sortTable(0)">Id</th>
+            <th onclick="sortTable(1)">Title</th>
+            <th onclick="sortTable(2)">Description</th>
+            <th onclick="sortTable(3)">PublicationDate</th>
+            <th onclick="sortTable(4)">PageCount</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var book in Model)
         {
-            <tr id="@book.Id" onclick="highlightRow(this)">
-                <td>@book.Title</td>
-                <td>@book.PublicationDate.ToShortDateString()</td>
-                <td>@book.PageCount</td>
-            </tr>
+        <tr id="@book.Id" onclick="highlightRow(this)">
+            <td>@book.Id</td>
+            <td>@book.Title</td>
+            <td>@book.Description</td>
+            <td>@book.PublicationDate.ToShortDateString()</td>
+            <td>@book.PageCount</td>
+        </tr>
         }
     </tbody>
 </table>
@@ -66,7 +70,7 @@
                         <input type="date" class="form-control" id="bookDate" required />
                     </div>
                     <div class="form-group">
-                        <label for="bookPages"Pages Count:</label>
+                        <label for="bookPages">Pages Count:</label>
                         <input type="number" class="form-control" id="bookPages" required />
                     </div>
                     <div class="form-group">

@@ -7,6 +7,7 @@ using BooksApp.Services.Abstractions;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -29,6 +30,32 @@ namespace BooksApp.Services.Implementations
                     .AsNoTracking()
                     .ToListAsync();
 
+                return Result<List<Book>>.CreateSuccess(result);
+            }
+            catch (Exception e)
+            {
+                return Result<IList<Book>>.CreateFailure("Get Books Error", e);
+            }
+        }
+
+        public async Task<IResult<IList<Book>>> GetSearchBooksAsync(string search)
+        {
+            try
+            {
+                var result = await _context.Books
+                    .Where(x => x.Description.Contains(search)
+                    || x.Title.Contains(search))
+                    .AsNoTracking()
+                    .ToListAsync();
+
+                if (string.IsNullOrEmpty(search))
+                {
+                    var allBooks = await GetAllBooksAsync();
+
+                    result = allBooks
+                        .Data
+                        .ToList();
+                }
                 return Result<List<Book>>.CreateSuccess(result);
             }
             catch (Exception e)

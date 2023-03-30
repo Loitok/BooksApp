@@ -1,4 +1,4 @@
-﻿<script>
+﻿
     $(document).ready(function () {
         $("#saveBook").on("click", function () {
             var bookId = $("#bookId").val();
@@ -18,7 +18,7 @@
 
             $.ajax({
                 type: "POST",
-                url: action === "add" ? "/Books/Add" : "/Books/Edit",
+                url: action === "add" ? "/Books/PostBook" : "/Books/UpdateBook",
                 data: JSON.stringify(book),
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
@@ -27,7 +27,7 @@
                     $("#bookModal").modal("hide");
 
                     // Refresh the table with the updated list of books
-                    $("#bookTable").load("/Books/Index #bookTable");
+                    $("#bookTable").load("/Books/BookList #bookTable");
                 },
                 error: function (xhr, status, error) {
                     console.error(xhr.responseText);
@@ -35,4 +35,3 @@
             });
         });
     });
-</script>

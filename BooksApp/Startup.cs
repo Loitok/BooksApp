@@ -53,7 +53,7 @@ namespace BooksApp
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Book}/{action=BooksList}/{id?}");
+                    pattern: "{controller=Book}/{action=BooksList}");
             });
         }
     }

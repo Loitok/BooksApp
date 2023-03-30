@@ -9,6 +9,7 @@ namespace BooksApp.Services.Abstractions
     public interface IBookService
     {
         Task<IResult<IList<Book>>> GetAllBooksAsync();
+        Task<IResult<IList<Book>>> GetSearchBooksAsync(string search);
         Task<IResult<Book>> GetBookAsync(int bookId);
 
         Task<IResult<int>> CreateBookAsync(Book model);

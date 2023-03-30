@@ -9,15 +9,11 @@ namespace BooksApp.Controllers
 {
     public class BooksController : Controller
     {
-        private readonly ILogger<BooksController> _logger;
-
         private readonly IBookService _service;
 
-        public BooksController(ILogger<BooksController> logger, IBookService service)
-        {
-            _logger = logger;
-            _service = service;
-        }
+        public BooksController(IBookService service)
+            => _service = service;
+        
 
         public async Task<ActionResult<IEnumerable<Book>>> BooksList()
         {
@@ -28,6 +24,15 @@ namespace BooksApp.Controllers
             return View(result.Data);
         }
 
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Book>>> SearchBooks(string searchString)
+        {
+            var result = await _service.GetSearchBooksAsync(searchString);
+            if (!result.Success)
+                ViewBag.error = result.ErrorMessage.Message;
+
+            return Json(result.Data);
+        }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Book>>> GetBooks()
