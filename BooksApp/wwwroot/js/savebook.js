@@ -6,28 +6,26 @@
             var bookDate = $("#bookDate").val();
             var bookPages = $("#bookPages").val();
             var bookDescription = $("#bookDescription").val();
-            var action = $("#bookModal").data("action");
 
             var book = {
                 "Id": bookId,
-                "Name": bookName,
+                "Title": bookName,
                 "PublicationDate": bookDate,
                 "PageCount": bookPages,
                 "Description": bookDescription
             };
 
+            console.log(book);
+
             $.ajax({
                 type: "POST",
-                url: action === "add" ? "/Books/PostBook" : "/Books/UpdateBook",
-                data: JSON.stringify(book),
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
+                url: "/Books/PostBook",
+                data: book,
+                contentType: "application/x-www-form-urlencoded",
                 success: function (data) {
-                    // Close the modal dialog
                     $("#bookModal").modal("hide");
 
-                    // Refresh the table with the updated list of books
-                    $("#bookTable").load("/Books/BookList #bookTable");
+                    $("#bookTable").load("/Books/GetBooks #bookTable");
                 },
                 error: function (xhr, status, error) {
                     console.error(xhr.responseText);

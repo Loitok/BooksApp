@@ -31,7 +31,10 @@ namespace BooksApp.Controllers
             if (!result.Success)
                 ViewBag.error = result.ErrorMessage.Message;
 
-            return Json(result.Data);
+            var a = Json(result.Data);
+
+            return a;
+            //return Json(result.Data);
         }
 
         [HttpGet]
@@ -55,12 +58,12 @@ namespace BooksApp.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Book>> PostBook(Book model)
+        public async Task<ActionResult<Book>> PostBook([FromForm] Book model)
         {
             var result = await _service.CreateBookAsync(model);
             if (!result.Success)
                 ViewBag.error = result.ErrorMessage.Message;
-
+            
             return Json(result.Data);
         }
 

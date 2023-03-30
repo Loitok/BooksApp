@@ -88,7 +88,9 @@ namespace BooksApp.Services.Implementations
         {
             try
             {
-                await _context.Books.AddAsync(model);
+                _context.Books.Add(model);
+
+                await _context.SaveChangesAsync();
 
                 return Result<int>.CreateSuccess(model.Id);
             }
